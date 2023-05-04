@@ -8,37 +8,63 @@ export function multiply(a: number, b: number): Promise<number> {
   return Promise.resolve(a * b);
 }
 
-// export const setSnackBar = (
-//   flag: boolean,
-//   message: string,
-//   timer = 3000,
-//   position = 'top'
-// ) => {
-//   setFlag(flag);
-//   setMessage(message);
-//   setTimer(timer);
-//   setPosition(position);
-// };
+export type setSnackBarType = {
+  feedback: boolean | null;
+  content: string | null;
+  time?: number | null;
+  barPosition?: 'top' | 'bottom' | null;
+};
+interface SnackBarProps {
+  setSnackBar: setSnackBarType;
+}
 
-export function SnackBar() {
-  const [flag, setFlag] = useState<boolean | null>(true);
-  const [message, setMessage] = useState('Mensagem');
+export function SnackBar({ setSnackBar }: SnackBarProps) {
+  const [flag, setFlag] = useState<boolean | null>(null);
+  const [message, setMessage] = useState('');
   const [timer, setTimer] = useState(3000);
   const [position, setPosition] = useState('top');
 
-  // useEffect(() => {
-  //   if (flag !== null) {
-  //     const timeout = setTimeout(() => {
-  //       setFlag(null);
-  //     }, timer);
-  //     return () => {
-  //       clearTimeout(timeout);
-  //     };
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [flag]);
+  useEffect(() => {
+    if (flag !== null) {
+      const timeout = setTimeout(() => {
+        setFlag(null);
+        setMessage('');
+        setPosition('top');
+        setTimer(3000);
+      }, timer);
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+    return;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [flag]);
+
+  useEffect(() => {
+    if (setSnackBar.feedback !== null && setSnackBar.content !== null) {
+      const { feedback, content, time, barPosition } = setSnackBar;
+      setFlag(feedback);
+      setMessage(content);
+      if (time) {
+        setTimer(time);
+      } else {
+        setTimer(3000);
+      }
+      if (barPosition) {
+        setPosition(barPosition);
+      } else {
+        setPosition('top');
+      }
+    }
+  }, [setSnackBar]);
+
+  // setSnackBar({
+  //   flag: true,
+  //   message: 'testes',
+  // });
+
   return (
-    <View>
+    <>
       {flag !== null && position === 'top' && (
         <View style={styles.containerTop}>
           {flag && (
@@ -67,7 +93,7 @@ export function SnackBar() {
           )}
         </View>
       )}
-    </View>
+    </>
   );
 }
 
@@ -88,6 +114,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 64,
     left: 32,
+    right: 32,
     zIndex: 1,
     borderRadius: 4,
     padding: 16,

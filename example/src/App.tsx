@@ -1,19 +1,70 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { SnackBar, multiply } from 'react-native-simple-snackbar';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { SnackBar, setSnackBarType } from 'react-native-simple-snackbar';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(2, 8).then(setResult);
-  }, []);
+  const [status, setStatus] = React.useState<setSnackBarType>({
+    feedback: null,
+    content: null,
+  });
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
-      <SnackBar />
+      <TouchableOpacity
+        style={styles.touchable}
+        onPress={() =>
+          setStatus({
+            feedback: true,
+            content: 'green and top!',
+          })
+        }
+      >
+        <Text style={styles.text}>
+          Touch here to activate snackbar green and top
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.touchable}
+        onPress={() =>
+          setStatus({
+            feedback: true,
+            content: 'green and bottom!',
+            barPosition: 'bottom',
+          })
+        }
+      >
+        <Text style={styles.text}>
+          Touch here to activate snackbar green and bottom
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.touchable}
+        onPress={() => setStatus({ feedback: false, content: 'red and top!' })}
+      >
+        <Text style={styles.text}>
+          Touch here to activate snackbar red and top
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.touchable}
+        onPress={() =>
+          setStatus({
+            feedback: false,
+            content: 'red and bottom!',
+            barPosition: 'bottom',
+          })
+        }
+      >
+        <Text style={styles.text}>
+          Touch here to activate snackbar red and bottom
+        </Text>
+      </TouchableOpacity>
+
+      <SnackBar setSnackBar={status} />
     </View>
   );
 }
@@ -24,9 +75,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
+  touchable: {
+    margin: 30,
+  },
+
+  text: {
+    fontSize: 18,
+    textAlign: 'center',
   },
 });
