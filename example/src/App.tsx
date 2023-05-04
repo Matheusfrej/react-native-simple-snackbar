@@ -4,10 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { SnackBar, setSnackBarType } from 'react-native-simple-snackbar';
 
 export default function App() {
-  const [status, setStatus] = React.useState<setSnackBarType>({
-    feedback: null,
-    content: null,
-  });
+  const [status, setStatus] = React.useState<setSnackBarType | undefined>();
 
   return (
     <View style={styles.container}>
@@ -17,6 +14,7 @@ export default function App() {
           setStatus({
             feedback: true,
             content: 'green and top!',
+            time: 7000,
           })
         }
       >

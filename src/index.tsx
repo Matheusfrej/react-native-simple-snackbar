@@ -9,13 +9,13 @@ export function multiply(a: number, b: number): Promise<number> {
 }
 
 export type setSnackBarType = {
-  feedback: boolean | null;
-  content: string | null;
-  time?: number | null;
-  barPosition?: 'top' | 'bottom' | null;
+  feedback: boolean;
+  content: string;
+  time?: number;
+  barPosition?: 'top' | 'bottom';
 };
 interface SnackBarProps {
-  setSnackBar: setSnackBarType;
+  setSnackBar: setSnackBarType | undefined;
 }
 
 export function SnackBar({ setSnackBar }: SnackBarProps) {
@@ -41,7 +41,7 @@ export function SnackBar({ setSnackBar }: SnackBarProps) {
   }, [flag]);
 
   useEffect(() => {
-    if (setSnackBar.feedback !== null && setSnackBar.content !== null) {
+    if (setSnackBar !== undefined) {
       const { feedback, content, time, barPosition } = setSnackBar;
       setFlag(feedback);
       setMessage(content);
