@@ -12,54 +12,41 @@ export default function App() {
         style={styles.touchable}
         onPress={() =>
           setStatus({
-            feedback: true,
-            content: 'green and top!',
-            time: 7000,
+            content: 'Snackbar on top!',
+            duration: 8000,
+            backgroundColor: '#a2e5a0',
+            color: '#0b0b09',
+            fontSize: 30,
+            fontWeight: '900',
+            textAlign: 'center',
           })
         }
       >
-        <Text style={styles.text}>
-          Touch here to activate snackbar green and top
-        </Text>
+        <Text style={styles.text}>Touch here to activate snackbar on top</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.touchable}
         onPress={() =>
           setStatus({
-            feedback: true,
-            content: 'green and bottom!',
-            barPosition: 'bottom',
+            content: 'Snackbar on bottom!',
+            backgroundColor: '#000',
+            position: 'bottom',
           })
         }
       >
         <Text style={styles.text}>
-          Touch here to activate snackbar green and bottom
+          Touch here to activate snackbar on bottom
         </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.touchable}
-        onPress={() => setStatus({ feedback: false, content: 'red and top!' })}
+        onPress={() => {
+          console.log('clicou');
+        }}
       >
-        <Text style={styles.text}>
-          Touch here to activate snackbar red and top
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.touchable}
-        onPress={() =>
-          setStatus({
-            feedback: false,
-            content: 'red and bottom!',
-            barPosition: 'bottom',
-          })
-        }
-      >
-        <Text style={styles.text}>
-          Touch here to activate snackbar red and bottom
-        </Text>
+        <Text style={styles.text}>Clica aqui pra testar</Text>
       </TouchableOpacity>
 
       <SnackBar setSnackBar={status} />
