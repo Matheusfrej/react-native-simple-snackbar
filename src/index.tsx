@@ -6,10 +6,6 @@ import { StyleSheet } from 'react-native';
 import { Text } from 'react-native';
 import { View } from 'react-native';
 
-export function multiply(a: number, b: number): Promise<number> {
-  return Promise.resolve(a * b);
-}
-
 export type setSnackBarType = {
   content: string;
   backgroundColor?: string;
@@ -30,7 +26,7 @@ export type setSnackBarType = {
     | undefined;
   textAlign?: 'center' | 'auto' | 'left' | 'right' | 'justify' | undefined;
   duration?: number;
-  position?: 'top' | 'bottom';
+  position?: 'top' | 'center' | 'bottom';
 };
 interface SnackBarProps {
   setSnackBar: setSnackBarType | undefined;
@@ -178,6 +174,33 @@ export function SnackBar({ setSnackBar }: SnackBarProps) {
           </View>
         </Animated.View>
       )}
+      {message !== null && barPosition === 'center' && (
+        <Animated.View
+          style={{
+            ...styles.container,
+            justifyContent: 'center',
+            opacity: fadeAnim,
+          }}
+        >
+          <View
+            style={{
+              ...styles.innerContainer,
+              backgroundColor: internBackgroundColor,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: internFontSize,
+                fontWeight: internFontWeight,
+                color: internColor,
+                textAlign: internTextAlign,
+              }}
+            >
+              {message}
+            </Text>
+          </View>
+        </Animated.View>
+      )}
       {message !== null && barPosition === 'bottom' && (
         <Animated.View
           style={{ ...styles.container, bottom: 0, opacity: fadeAnim }}
@@ -192,7 +215,7 @@ export function SnackBar({ setSnackBar }: SnackBarProps) {
             <Text
               style={{
                 fontSize: internFontSize,
-                fontWeight: undefined,
+                fontWeight: internFontWeight,
                 color: internColor,
                 textAlign: internTextAlign,
               }}
@@ -210,6 +233,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     position: 'absolute',
+    zIndex: 10000,
   },
 
   innerContainer: {
