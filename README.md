@@ -7,14 +7,17 @@ A simple and full costumizable solution for a timed **SnackBar**.
 ```sh
 npm install react-native-simple-snackbar
 ```
+or
+```sh
+yarn add react-native-simple-snackbar
+```
 
 ## Usage
 
 Just import the **SnackBar** Component and, if you want, the type of the object that controls it's status, **setSnackBarType**.
+To display the snackbar, update the value of the state controller.
 
 You can also have multiple instances of **SnackBar** inside different containers, as long as you have a different instance of controller for each one.
-
-To display the snackbar, update the value of the state controller.
 
 Below are the keys you can pass to the controller:
 | Key | Data type | Default value? | Description |
@@ -60,7 +63,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 export default function App() {
 
-  // start controller empty
+  // start controller empty (use the type here only if you are using typescript)
   const [status, setStatus] = useState<setSnackBarType | undefined>();
 
   return (
@@ -87,8 +90,27 @@ export default function App() {
         style={styles.touchable}
         onPress={() =>
           setStatus({
-            content: 'Snackbar on bottom!',
+            content: 'Snackbar on center!',
             backgroundColor: '#2800a1',
+            color: '#ffffff',
+            fontSize: 20,
+            fontWeight: 'normal',
+            textAlign: 'right',
+            position: 'center',
+          })
+        }
+      >
+        <Text style={styles.text}>
+          Touch here to activate snackbar on center
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.touchable}
+        onPress={() =>
+          setStatus({
+            content: 'Snackbar on bottom!',
+            backgroundColor: '#e10404',
             color: '#ffffff',
             fontSize: 20,
             fontWeight: 'bold',
@@ -121,7 +143,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
 
 ```
 
