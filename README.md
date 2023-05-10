@@ -39,14 +39,19 @@ import { SnackBar } from 'react-native-simple-snackbar'
 
 export default function Component() {
   //...
+  // start controller empty
   const [status, setStatus] = useState()
   //...
 
   return (
     <View style={{flex: 1}}>
+
+      {/* When you want the SnackBar to be shown, just update the controller */}
       <TouchableOpacity onPress={() => setStatus({ content: 'My SnackBar Works!!' })}>
         <Text style={styles.text}>Touch here to activate snackbar</Text>
       </TouchableOpacity>
+      
+      {/* Instantiate the SnackBar inside the container you want to show it */}
       <SnackBar setSnackBar={status} />
     </View>
   )
@@ -63,7 +68,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 export default function App() {
 
-  // start controller empty (use the type here only if you are using typescript)
+  // start controller empty (use the type here if you are using typescript)
   const [status, setStatus] = useState<setSnackBarType | undefined>();
 
   return (
@@ -146,6 +151,9 @@ const styles = StyleSheet.create({
 
 ```
 
+## Contributing
+
+See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
 ## License
 
