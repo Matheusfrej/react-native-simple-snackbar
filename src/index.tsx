@@ -25,7 +25,7 @@ export type setSnackBarType = {
     | undefined;
   textAlign?: 'center' | 'auto' | 'left' | 'right' | 'justify' | undefined;
   duration?: number;
-  position?: 'top' | 'center' | 'bottom';
+  position?: 'top' | 'bottom';
   animation?: 'slide' | 'fade';
 };
 interface SnackBarProps {
@@ -201,53 +201,6 @@ export function SnackBar({ setSnackBar }: SnackBarProps) {
               style={{
                 ...styles.innerContainer,
                 top: 64,
-                backgroundColor: internBackgroundColor,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: internFontSize,
-                  fontWeight: internFontWeight,
-                  color: internColor,
-                  textAlign: internTextAlign,
-                }}
-              >
-                {message}
-              </Text>
-            </Animated.View>
-          )}
-        </Animated.View>
-      )}
-      {message !== null && barPosition === 'center' && (
-        <Animated.View
-          style={{
-            ...styles.container,
-            justifyContent: 'center',
-            opacity: fadeAnim,
-          }}
-        >
-          {internAnimation !== 'fade' ? (
-            <Animated.View
-              style={{
-                ...styles.innerContainer,
-                backgroundColor: internBackgroundColor,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: internFontSize,
-                  fontWeight: internFontWeight,
-                  color: internColor,
-                  textAlign: internTextAlign,
-                }}
-              >
-                {message}
-              </Text>
-            </Animated.View>
-          ) : (
-            <Animated.View
-              style={{
-                ...styles.innerContainer,
                 backgroundColor: internBackgroundColor,
               }}
             >

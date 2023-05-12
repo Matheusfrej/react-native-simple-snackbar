@@ -47,27 +47,6 @@ export default function App() {
           style={styles.touchable}
           onPress={() =>
             setStatus2({
-              content: 'Snackbar on center!',
-              backgroundColor: '#ffff00',
-              textAlign: 'center',
-              position: 'center',
-              color: '#000',
-              duration: 5000,
-              fontSize: 22,
-              fontWeight: 'bold',
-              animation: 'slide',
-            })
-          }
-        >
-          <Text style={styles.text2}>
-            Touch here to activate snackbar on center
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.touchable}
-          onPress={() =>
-            setStatus2({
               content: 'Snackbar on bottom!',
               backgroundColor: '#ff0000',
               position: 'bottom',
@@ -92,6 +71,7 @@ export default function App() {
             fontWeight: 'bold',
             textAlign: 'justify',
             position: 'bottom',
+            animation: 'fade',
           })
         }
       >
