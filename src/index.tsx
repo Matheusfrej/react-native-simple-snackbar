@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { Animated } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Text } from 'react-native';
-import { View } from 'react-native';
 
 export type setSnackBarType = {
   content: string;
@@ -26,7 +25,8 @@ export type setSnackBarType = {
     | undefined;
   textAlign?: 'center' | 'auto' | 'left' | 'right' | 'justify' | undefined;
   duration?: number;
-  position?: 'top' | 'center' | 'bottom';
+  position?: 'top' | 'bottom';
+  animation?: 'slide' | 'fade';
 };
 interface SnackBarProps {
   setSnackBar: setSnackBarType | undefined;
@@ -57,19 +57,67 @@ export function SnackBar({ setSnackBar }: SnackBarProps) {
     'center' | 'auto' | 'left' | 'right' | 'justify' | undefined
   >('left');
   const [barPosition, setBarPosition] = useState('top');
+  const [internAnimation, setInternAnimation] = useState<'slide' | 'fade'>(
+    'slide'
+  );
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const timeoutRef = useRef<any>(null);
+  const slideTopAnim = useRef(new Animated.Value(0)).current;
+  const slideBottomAnim = useRef(new Animated.Value(0)).current;
 
+  const timeoutRef = useRef<any>(null);
+  const slideTopRef = useRef<any>(null);
+  const slideBottomRef = useRef<any>(null);
   useEffect(() => {
     if (message !== null) {
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 200,
-        useNativeDriver: true,
-      }).start();
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
+      }
+      slideTopAnim.setValue(0);
+      slideBottomAnim.setValue(0);
+      fadeAnim.setValue(0);
+      if (internAnimation === 'slide' && barPosition === 'top') {
+        fadeAnim.setValue(1);
+        if (slideTopRef.current) {
+          clearTimeout(slideTopRef.current);
+        }
+
+        Animated.timing(slideTopAnim, {
+          toValue: 64,
+          duration: 100,
+          useNativeDriver: true,
+        }).start();
+        slideTopRef.current = setTimeout(() => {
+          Animated.timing(slideTopAnim, {
+            toValue: 0,
+            duration: 100,
+            useNativeDriver: true,
+          }).start();
+        }, timer - 100);
+      } else if (internAnimation === 'slide' && barPosition === 'bottom') {
+        fadeAnim.setValue(1);
+
+        if (slideBottomRef.current) {
+          clearTimeout(slideBottomRef.current);
+        }
+        Animated.timing(slideBottomAnim, {
+          toValue: -128,
+          duration: 100,
+          useNativeDriver: true,
+        }).start();
+        slideBottomRef.current = setTimeout(() => {
+          Animated.timing(slideBottomAnim, {
+            toValue: 0,
+            duration: 100,
+            useNativeDriver: true,
+          }).start();
+        }, timer - 100);
+      } else {
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: true,
+        }).start();
       }
       const animationTimeout = setTimeout(() => {
         Animated.timing(fadeAnim, {
@@ -78,6 +126,7 @@ export function SnackBar({ setSnackBar }: SnackBarProps) {
           useNativeDriver: true,
         }).start();
       }, timer - 200);
+
       timeoutRef.current = setTimeout(() => {
         setMessage(null);
         setInternBackgroundColor('#22943E');
@@ -108,43 +157,17 @@ export function SnackBar({ setSnackBar }: SnackBarProps) {
         textAlign,
         duration,
         position,
+        animation,
       } = setSnackBar;
       setMessage(content);
-      if (backgroundColor) {
-        setInternBackgroundColor(backgroundColor);
-      } else {
-        setInternBackgroundColor('#22943E');
-      }
-      if (color) {
-        setInternColor(color);
-      } else {
-        setInternColor('white');
-      }
-      if (fontSize) {
-        setInternFontSize(fontSize);
-      } else {
-        setInternFontSize(18);
-      }
-      if (fontWeight) {
-        setInternFontWeight(fontWeight);
-      } else {
-        setInternFontWeight('600');
-      }
-      if (textAlign) {
-        setInternTextAlign(textAlign);
-      } else {
-        setInternTextAlign('left');
-      }
-      if (duration) {
-        setTimer(duration);
-      } else {
-        setTimer(3000);
-      }
-      if (position) {
-        setBarPosition(position);
-      } else {
-        setBarPosition('top');
-      }
+      setInternBackgroundColor(backgroundColor || '#22943E');
+      setInternColor(color || 'white');
+      setInternFontSize(fontSize || 18);
+      setInternFontWeight(fontWeight || '600');
+      setInternTextAlign(textAlign || 'left');
+      setTimer(duration || 3000);
+      setBarPosition(position || 'top');
+      setInternAnimation(animation || 'slide');
     }
   }, [setSnackBar]);
 
@@ -154,75 +177,90 @@ export function SnackBar({ setSnackBar }: SnackBarProps) {
         <Animated.View
           style={{ ...styles.container, top: 0, opacity: fadeAnim }}
         >
-          <View
-            style={{
-              ...styles.innerContainer,
-              top: 64,
-              backgroundColor: internBackgroundColor,
-            }}
-          >
-            <Text
+          {internAnimation !== 'fade' ? (
+            <Animated.View
               style={{
-                fontSize: internFontSize,
-                fontWeight: internFontWeight,
-                color: internColor,
-                textAlign: internTextAlign,
+                ...styles.innerContainer,
+                transform: [{ translateY: slideTopAnim }],
+                backgroundColor: internBackgroundColor,
               }}
             >
-              {message}
-            </Text>
-          </View>
-        </Animated.View>
-      )}
-      {message !== null && barPosition === 'center' && (
-        <Animated.View
-          style={{
-            ...styles.container,
-            justifyContent: 'center',
-            opacity: fadeAnim,
-          }}
-        >
-          <View
-            style={{
-              ...styles.innerContainer,
-              backgroundColor: internBackgroundColor,
-            }}
-          >
-            <Text
+              <Text
+                style={{
+                  fontSize: internFontSize,
+                  fontWeight: internFontWeight,
+                  color: internColor,
+                  textAlign: internTextAlign,
+                }}
+              >
+                {message}
+              </Text>
+            </Animated.View>
+          ) : (
+            <Animated.View
               style={{
-                fontSize: internFontSize,
-                fontWeight: internFontWeight,
-                color: internColor,
-                textAlign: internTextAlign,
+                ...styles.innerContainer,
+                top: 64,
+                backgroundColor: internBackgroundColor,
               }}
             >
-              {message}
-            </Text>
-          </View>
+              <Text
+                style={{
+                  fontSize: internFontSize,
+                  fontWeight: internFontWeight,
+                  color: internColor,
+                  textAlign: internTextAlign,
+                }}
+              >
+                {message}
+              </Text>
+            </Animated.View>
+          )}
         </Animated.View>
       )}
       {message !== null && barPosition === 'bottom' && (
         <Animated.View
           style={{ ...styles.container, bottom: 0, opacity: fadeAnim }}
         >
-          <View
-            style={{
-              ...styles.innerContainer,
-              bottom: 64,
-              backgroundColor: internBackgroundColor,
-            }}
-          >
-            <Text
+          {internAnimation !== 'fade' ? (
+            <Animated.View
               style={{
-                fontSize: internFontSize,
-                fontWeight: internFontWeight,
-                color: internColor,
-                textAlign: internTextAlign,
+                ...styles.innerContainer,
+                transform: [{ translateY: slideBottomAnim }],
+                backgroundColor: internBackgroundColor,
               }}
             >
-              {message}
-            </Text>
-          </View>
+              <Text
+                style={{
+                  fontSize: internFontSize,
+                  fontWeight: internFontWeight,
+                  color: internColor,
+                  textAlign: internTextAlign,
+                }}
+              >
+                {message}
+              </Text>
+            </Animated.View>
+          ) : (
+            <Animated.View
+              style={{
+                ...styles.innerContainer,
+                bottom: 64,
+                backgroundColor: internBackgroundColor,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: internFontSize,
+                  fontWeight: internFontWeight,
+                  color: internColor,
+                  textAlign: internTextAlign,
+                }}
+              >
+                {message}
+              </Text>
+            </Animated.View>
+          )}
         </Animated.View>
       )}
     </>

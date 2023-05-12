@@ -24,7 +24,8 @@ Below are the keys you can pass to the controller:
 | --- | --- | --- | --- |
 | content | string | Required. | The message to show |
 | duration | number | 3000 | How long to display the Snackbar in milliseconds |
-| position | 'top' \| 'bottom' \| 'center' | 'top' | The position in container where snackbar will be displayed |
+| animation | 'slide' \| 'fade' | 'slide' | The animation of the snackbar |
+| position | 'top' \| 'bottom' | 'top' | The position in container where snackbar will be displayed |
 | backgroundColor | style | '#22943E' | The background color of the Snackbar |
 | color | style | '#ffffff' | The color of the text |
 | fontSize | number | 18 | Font size of the text |
@@ -91,24 +92,6 @@ export default function App() {
         <Text style={styles.text}>Touch here to activate snackbar on top</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.touchable}
-        onPress={() =>
-          setStatus({
-            content: 'Snackbar on center!',
-            backgroundColor: '#2800a1',
-            color: '#ffffff',
-            fontSize: 20,
-            fontWeight: 'normal',
-            textAlign: 'right',
-            position: 'center',
-          })
-        }
-      >
-        <Text style={styles.text}>
-          Touch here to activate snackbar on center
-        </Text>
-      </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.touchable}
