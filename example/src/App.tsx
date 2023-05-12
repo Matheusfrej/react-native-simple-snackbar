@@ -55,6 +55,7 @@ export default function App() {
               duration: 5000,
               fontSize: 22,
               fontWeight: 'bold',
+              animation: 'slide',
             })
           }
         >
