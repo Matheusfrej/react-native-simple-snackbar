@@ -119,13 +119,14 @@ export function SnackBar({ setSnackBar }: SnackBarProps) {
           useNativeDriver: true,
         }).start();
       }
+      const durationValue = internAnimation === 'slide' ? 0 : 200;
       const animationTimeout = setTimeout(() => {
         Animated.timing(fadeAnim, {
           toValue: 0,
-          duration: 200,
+          duration: durationValue,
           useNativeDriver: true,
         }).start();
-      }, timer - 200);
+      }, timer - durationValue);
 
       timeoutRef.current = setTimeout(() => {
         setMessage(null);

@@ -1,6 +1,6 @@
 {
   "name": "react-native-simple-snackbar",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A simple and full costumizable solution for a timed SnackBar.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
